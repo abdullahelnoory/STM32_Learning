@@ -31,8 +31,8 @@
 #define GPIOA_ADDRESS		 (APB2_BASE_ADDRESS + (0x0800))
 #define GPIOB_ADDRESS		 (APB2_BASE_ADDRESS + (0x0C00))
 #define GPIOC_ADDRESS		 (APB2_BASE_ADDRESS + (0x1000))
-#define GPIOD_ADDRESS		 (APB2_BASE_ADDRESS + (0x1800))
-#define GPIOE_ADDRESS		 (APB2_BASE_ADDRESS + (0x1400))
+#define GPIOD_ADDRESS		 (APB2_BASE_ADDRESS + (0x1400))
+#define GPIOE_ADDRESS		 (APB2_BASE_ADDRESS + (0x1800))
 
 #define ADC1_ADDRESS		 (APB2_BASE_ADDRESS + (0x2400))
 #define ADC2_ADDRESS		 (APB2_BASE_ADDRESS + (0x2800))
@@ -78,8 +78,8 @@ typedef struct
 	volatile uint32_t TRISE;
 }I2C_RegDef_t;
 
-#define I2C1				 (I2C_Reg_Def_t*)I2C1_ADDRESS
-#define I2C2				 (I2C_Reg_Def_t*)I2C2_ADDRESS
+#define I2C1				 (I2C_RegDef_t*)I2C1_ADDRESS
+#define I2C2				 (I2C_RegDef_t*)I2C2_ADDRESS
 
 //AFIO Register Structure Definition
 typedef struct

@@ -93,7 +93,9 @@ void GP_TIM_Interrupt_Control(GP_TIM_RegDef_t* pGP_TIM, uint8_t InterruptType, u
 
 uint8_t GP_TIM_Status_Check(GP_TIM_RegDef_t* pGP_TIM, uint8_t FlagType)
 {
-	return ((pGP_TIM->SR >> FlagType) & 1);
+	uint8_t statusValue = ((pGP_TIM->SR >> FlagType) & 1);
+	pGP_TIM->SR &= ~(1 << FlagType);
+	return statusValue;
 }
 
 void GP_TIM_Event_Generation_Control(GP_TIM_RegDef_t* pGP_TIM, uint8_t EventType, uint8_t value)

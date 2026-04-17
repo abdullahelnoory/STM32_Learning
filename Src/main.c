@@ -22,33 +22,54 @@
 #include "../Drivers/AFIO_Driver.h"
 #include "../Drivers/EXTI_Driver.h"
 #include "../Drivers/GP_TIM_Driver.h"
+#include "../Drivers/I2C_Driver.h"
+#include "../Drivers/LCD_Driver.h"
 #include "../Drivers/NVIC.h"
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
-void delay(int loops)
+void delay(int delay_ms)
 {
-	for(int i = 0; i < loops; i++);
+	GP_TIM_SetCount(TIM2, 0);
+	GP_TIM_SetPrescaler(TIM2, 7199);
+	GP_TIM_SetAutoReload(TIM2, 10 * delay_ms);
+	while(!(GP_TIM_Status_Check(TIM2, 0)));
 }
 
 int main(void)
 {
 
-	GPIO_ClockControl(GPIOA, ENABLE);
-	GPIO_Init(GPIOA, 2, OUTPUT_AF_PP_2MHz);
+	GPIO_ClockControl(GPIOB, ENABLE);
+	GPIO_Init(GPIOB, 6, OUTPUT_AF_OD_2MHz);
+	GPIO_Init(GPIOB, 7, OUTPUT_AF_OD_2MHz);
 
 	GP_TIM_Clock_Control(TIM2, ENABLE);
 	GP_TIM_Control_Setting(TIM2, ENABLE, ENABLE, DISABLE);
-	GP_TIM_Interrupt_Control(TIM2, GP_TIM_CAPTURE_COMPARE3, ENABLE);
-	GP_TIM_Compare_Set_Mode(TIM2, 3, 6);
+	GP_TIM_Compare_Set_Mode(TIM2, 3, 0);
 	GP_TIM_Enable_Control(TIM2, 3, ENABLE);
 
-	GP_TIM_SetCount(TIM2, 0);
-	GP_TIM_SetPrescaler(TIM2, 71);
-	GP_TIM_SetAutoReload(TIM2, 1000);
-	GP_TIM_SetCaptureCompareValue(TIM2, 3, 800);
+	I2C_ClockControl(I2C1, ENABLE);
+	I2C_Init(I2C1);
+
+	LCD_Init(I2C1);
+
+	I2C_Start(I2C1, 0x27, 0);
+	LCD_SendByte(I2C1, 'H');
+	LCD_SendByte(I2C1, 'e');
+	LCD_SendByte(I2C1, 'l');
+	LCD_SendByte(I2C1, 'l');
+	LCD_SendByte(I2C1, 'o');
+	LCD_SendByte(I2C1, ' ');
+	LCD_SendByte(I2C1, 'w');
+	LCD_SendByte(I2C1, 'o');
+	LCD_SendByte(I2C1, 'r');
+	LCD_SendByte(I2C1, 'l');
+	LCD_SendByte(I2C1, 'd');
+	LCD_SendByte(I2C1, '!');
+
+	I2C_Stop(I2C1);
 
 	while(1)
 	{

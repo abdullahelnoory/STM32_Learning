@@ -57,30 +57,30 @@ int main(void)
 
 	GPIO_WriteToOut_Pin(GPIOB, 0, DISABLE);
 
-//	uint8_t enableNext = 1;
+	uint8_t enableNext = 1;
 
 	Enable_Interrupt(EXTI0_IRQn);
-	//GPIO_WriteToOut_Pin(GPIOA, 4, ENABLE);
+	GPIO_WriteToOut_Pin(GPIOA, 4, ENABLE);
 
 	while(1)
 	{
-//		uint8_t pressValue = GPIO_ReadFromIn_Pin(GPIOB, 0);
-//
-//		if(pressValue == 0 && enableNext)
-//		{
-//			delay(4000);
-//			if(pressValue == 0)
-//			{
-//				GPIO_ToggleOut_Pin(GPIOA, 4);
-//				enableNext = 0;
-//			}
-//		}
-//		else
-//		{
-//			delay(4000);
-//			if(pressValue == 1)
-//				enableNext = 1;
-//		}
+		uint8_t pressValue = GPIO_ReadFromIn_Pin(GPIOB, 0);
+
+		if(pressValue == 0 && enableNext)
+		{
+			delay(4000);
+			if(pressValue == 0)
+			{
+				GPIO_ToggleOut_Pin(GPIOA, 4);
+				enableNext = 0;
+			}
+		}
+		else
+		{
+			delay(4000);
+			if(pressValue == 1)
+				enableNext = 1;
+		}
 	}
 
 
